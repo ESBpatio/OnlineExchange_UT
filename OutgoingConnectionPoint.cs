@@ -106,13 +106,13 @@ namespace ESB_ConnectionPoints.SamplePlugins.File
                         }
                         else if (this._connectionPoint == "AxaptaGate")
                         {
-                            ESB_ConnectionPoints.SamplePlugins.File.axaptaGate.IntegrationaxSoapClient ws = this.ConnectionAxapteService();
-                            ConfiguredTaskAwaitable<ESB_ConnectionPoints.SamplePlugins.File.axaptaGate.sendMessageResponse>.ConfiguredTaskAwaiter receiptMethod = ws.sendMessageAsync(this.CreateOutgoingMessageAxapta(message)).ConfigureAwait(false).GetAwaiter();
+                            axaptaGate.IntegrationaxSoapClient ws = this.ConnectionAxapteService();
+                            ConfiguredTaskAwaitable<axaptaGate.sendMessageResponse>.ConfiguredTaskAwaiter receiptMethod = ws.sendMessageAsync(this.CreateOutgoingMessageAxapta(message)).ConfigureAwait(false).GetAwaiter();
                             receiptMethod.OnCompleted((Action)(() =>
                            {
                                try
                                {
-                                   ESB_ConnectionPoints.PluginsInterfaces.Message replyMessageAxapta = this.CreateReplyMessageAxapta(receiptMethod.GetResult(), message);
+                                   PluginsInterfaces.Message replyMessageAxapta = this.CreateReplyMessageAxapta(receiptMethod.GetResult(), message);
                                    replyHandler.HandleReplyMessage(replyMessageAxapta);
                                    this._logger.Debug("Ответ сформирован :" + Encoding.UTF8.GetString(replyMessageAxapta.Body));
                                    ws.Close();
@@ -127,13 +127,13 @@ namespace ESB_ConnectionPoints.SamplePlugins.File
                         }
                         else if (this._connectionPoint == "AxaptaStage")
                         {
-                            ESB_ConnectionPoints.SamplePlugins.File.axaptaStage1.IntegrationaxSoapClient ws = this.ConnectionAxaptaStage();
-                            ConfiguredTaskAwaitable<ESB_ConnectionPoints.SamplePlugins.File.axaptaStage1.sendMessageResponse>.ConfiguredTaskAwaiter receiptMethod = ws.sendMessageAsync(this.CreateOutgoingMessageAxaptaStage(message)).ConfigureAwait(false).GetAwaiter();
+                            axaptaStage1.IntegrationaxSoapClient ws = this.ConnectionAxaptaStage();
+                            ConfiguredTaskAwaitable<axaptaStage1.sendMessageResponse>.ConfiguredTaskAwaiter receiptMethod = ws.sendMessageAsync(this.CreateOutgoingMessageAxaptaStage(message)).ConfigureAwait(false).GetAwaiter();
                             receiptMethod.OnCompleted((Action)(() =>
                            {
                                try
                                {
-                                   ESB_ConnectionPoints.PluginsInterfaces.Message messageAxaptaStage = this.CreateReplyMessageAxaptaStage(receiptMethod.GetResult(), message);
+                                   PluginsInterfaces.Message messageAxaptaStage = this.CreateReplyMessageAxaptaStage(receiptMethod.GetResult(), message);
                                    replyHandler.HandleReplyMessage(messageAxaptaStage);
                                    this._logger.Debug("Ответ сформирован : " + Encoding.UTF8.GetString(messageAxaptaStage.Body));
                                    ws.Close();
@@ -292,10 +292,10 @@ namespace ESB_ConnectionPoints.SamplePlugins.File
         }
 
         public PluginsInterfaces.Message CreateReplyMessageAxaptaStage(
-          ESB_ConnectionPoints.SamplePlugins.File.axaptaStage1.sendMessageResponse response,
-          ESB_ConnectionPoints.PluginsInterfaces.Message message)
+          axaptaStage1.sendMessageResponse response,
+          PluginsInterfaces.Message message)
         {
-            ESB_ConnectionPoints.PluginsInterfaces.Message message1 = new ESB_ConnectionPoints.PluginsInterfaces.Message();
+            PluginsInterfaces.Message message1 = new PluginsInterfaces.Message();
             string s = "<ResponseArg  xmlns=\"http://schemas.datacontract.org/2004/07/\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\r\n                                 <resultStatus>" + response.Body.sendMessageResult.resultStatus.ToString() + "</resultStatus>\r\n                                 <resultLocation>" + (object)response.Body.sendMessageResult.resultLocation + "</resultLocation>\r\n                                 <resultCode>" + response.Body.sendMessageResult.resultCode + "</resultCode>\r\n                                 <resultMessage><![CDATA[" + response.Body.sendMessageResult.resultMessage + "]]></resultMessage> \r\n                                 <resultRecId>" + (object)response.Body.sendMessageResult.resultRecId + "</resultRecId>                   \r\n                                 <resultTableId>" + (object)response.Body.sendMessageResult.resultTableId + "</resultTableId>                  \r\n                                <resultDocNum>" + response.Body.sendMessageResult.resultDocNum + "</resultDocNum>\r\n                                </ResponseArg>";
             message1.Body = Encoding.UTF8.GetBytes(s);
             message1.ClassId = message.ClassId;
