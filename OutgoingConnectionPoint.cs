@@ -97,7 +97,7 @@ namespace ESB_ConnectionPoints.SamplePlugins.File
                                    catch (Exception ex)
                                    {
                                        replyHandler.HandleReplyMessage(this.CreateAndSendCatchMessage(ex.Message, message));
-                                       this._logger.Error(ex.Message);
+                                       this._logger.Warning(ex.Message);
                                        ws.Abort();
                                    }
                                }));
